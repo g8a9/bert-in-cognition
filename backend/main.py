@@ -3,10 +3,26 @@ from itertools import combinations
 from typing import List
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from scipy.spatial.distance import cosine
 
+EMBEDDING_DIR = "../"
+
 app = FastAPI()
+
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class SimpleRequest(BaseModel):
@@ -32,7 +48,7 @@ async def prototypes(request: SimpleRequest):
         emb_file = f"non_contextual_embeddings_bert_{layer}.pkl"
 
     # load embeddings
-    with open(f"../bert_embeddings_coca/{emb_file}", "rb") as fp:
+    with open(f"{EMBEDDING_DIR}/{emb_file}", "rb") as fp:
         embs = pickle.load(fp)
 
     # out of vocabulary
