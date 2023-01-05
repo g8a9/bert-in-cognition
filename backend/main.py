@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from scipy.spatial.distance import cosine
 
-EMBEDDING_DIR = "../"
+EMBEDDING_DIR = "../bert_embeddings_coca/"
 
 app = FastAPI()
 
